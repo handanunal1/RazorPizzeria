@@ -6,10 +6,16 @@ namespace RazorPizzeria.Pages.Forms
 {
     public class CustomPizzaModel : PageModel
     {
+<<<<<<< HEAD
         [BindProperty]
         public PizzasModel Pizza { get; set; }
         public float PizzaPrice { get; set; }
 
+=======
+        [BindProperty]  /* Bind PizzasModel to Pagemodel */
+
+        public PizzasModel Pizza { get; set; }
+>>>>>>> a1bd10703cc7e6e5dc491e4883593f1b41c70d15
         public void OnGet()
         {
         }
