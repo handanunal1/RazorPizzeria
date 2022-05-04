@@ -49,3 +49,7 @@ body {
     color: white;
 
 }
+
+.pizza-img :hover{
+    transform: scale(1.05);
+}

@@ -1,29 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPizzeria.Models;
+using System.Reflection;
 
-namespace RazorPizzeria.Pages.Forms
+namespace PizzaCreator.Pages.Forms
 {
     public class CustomPizzaModel : PageModel
     {
-        public void OnGet()
-        {
-        }
+        [BindProperty]
+        public PizzasModel Pizza { get; set; }
 
+        public float PizzaPrice { get; set; }
         public IActionResult OnPost()
         {
             PizzaPrice = Pizza.BasePrice;
 
-            if (Pizza.TomatoSauce) PizzaPrice += 1;
-            if (Pizza.Cheese) PizzaPrice += 1;
-            if (Pizza.Pepperoni) PizzaPrice += 1;
-            if (Pizza.MushRoom) PizzaPrice += 1;
-            if (Pizza.Tuna) PizzaPrice += 1;
-            if (Pizza.Pineapple) PizzaPrice += 10;
-            if (Pizza.Ham) PizzaPrice += 1;
-            if (Pizza.Beef) PizzaPrice += 1;
+            foreach (PropertyInfo propertyInfo in Pizza.GetType().GetProperties())
+            {
+                if (propertyInfo.PropertyType == typeof(bool))
+                {
+                    bool value = (bool)propertyInfo.GetValue(Pizza, null);
 
-            return RedirectToPage("/Checkout/Checkout", new { Pizza.PizzaName, PizzaPrice });
+                    if (value)
+                    {
+                        PizzaPrice++;
+                    }
+                }
+            }
+
+            return RedirectToPage("../Checkout/Checkout", new { Pizza.PizzaName, PizzaPrice });
         }
     }
 }
